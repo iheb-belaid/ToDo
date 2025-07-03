@@ -1,9 +1,12 @@
-package com.stage.ToDo;
+package com.stage.appToDo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
+
 
 import java.util.List;
 
@@ -28,10 +31,15 @@ public class TaskController {
     }
 
     @PostMapping("/save")
-    public String saveTask(@ModelAttribute Task task) {
+    public String saveTask(@Valid @ModelAttribute Task task, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("task", task);
+            return "tasks/form";
+        }
         taskRepository.save(task);
         return "redirect:/tasks";
     }
+
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {

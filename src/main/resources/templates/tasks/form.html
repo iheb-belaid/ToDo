@@ -13,7 +13,10 @@
     <input type="hidden" th:field="*{id}" />
 
     <label for="title">Titre :</label><br>
-    <input type="text" id="title" th:field="*{title}" required/><br><br>
+    <input type="text" id="title" th:field="*{title}" required/><br>
+    <p style="color: red;" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+    <br>
+
 
     <label for="completed">Terminée :</label>
     <input type="checkbox" id="completed" th:field="*{completed}"/><br><br>

@@ -8,7 +8,7 @@
 		<version>3.5.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.satage</groupId>
+	<groupId>com.stage</groupId>
 	<artifactId>ToDo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ToDo</name>
@@ -59,6 +59,13 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

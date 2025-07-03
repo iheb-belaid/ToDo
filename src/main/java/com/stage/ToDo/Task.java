@@ -1,4 +1,4 @@
-package com.satage.ToDo;
+package com.stage.ToDo;
 
 import jakarta.persistence.*;
 

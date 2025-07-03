@@ -1,4 +1,4 @@
-package com.satage.ToDo;
+package com.stage.ToDo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

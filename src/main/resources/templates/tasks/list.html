@@ -3,55 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <title>Liste des tâches</title>
-  <style>
-
-    .table-container {
-      text-align: center;
-      margin: 20px auto;
-    }
-    table {
-      margin: 0 auto;
-      border-collapse: collapse;
-      width: 80%;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #ddd;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <script th:src="@{/js/script.js}"></script>
 </head>
 <body>
-<div style="text-align: center;">
-  <h1>Mes Tâches</h1>
-  <a th:href="@{/tasks/new}">➕ Nouvelle tâche</a>
-</div>
+<h1>Mes Tâches</h1>
 
-<div class="table-container">
-  <table border="1">
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Titre</th>
-      <th>Terminée</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="task : ${tasks}">
-      <td th:text="${task.id}"></td>
-      <td th:text="${task.title}"></td>
-      <td th:text="${task.completed} ? '✅' : '❌'"></td>
-      <td>
-        <a th:href="@{'/tasks/edit/' + ${task.id}}">✏️ Modifier</a>
-        |
-        <a th:href="@{'/tasks/delete/' + ${task.id}}" onclick="return confirm('Supprimer ?')">🗑️ Supprimer</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-</div>
+<a th:href="@{/tasks/new}">➕ Nouvelle tâche</a>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Titre</th>
+    <th>Terminée</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="task : ${tasks}">
+    <td th:text="${task.id}"></td>
+    <td th:text="${task.title}"></td>
+    <td th:text="${task.completed} ? '✅' : '❌'"></td>
+    <td>
+      <a th:href="@{'/tasks/edit/' + ${task.id}}">✏️ Modifier</a>
+      |
+      <a th:href="@{'/tasks/delete/' + ${task.id}}"
+         onclick="return confirmDelete()">🗑️ Supprimer</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
 </body>
 </html>

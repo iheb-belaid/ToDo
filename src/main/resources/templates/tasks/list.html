@@ -10,11 +10,10 @@
 <h1>Mes Tâches</h1>
 
 <a th:href="@{/tasks/new}">➕ Nouvelle tâche</a>
-
+<br> <br> <br>
 <table>
   <thead>
   <tr>
-    <th>ID</th>
     <th>Titre</th>
     <th>Terminée</th>
     <th>Actions</th>
@@ -22,7 +21,6 @@
   </thead>
   <tbody>
   <tr th:each="task : ${tasks}">
-    <td th:text="${task.id}"></td>
     <td th:text="${task.title}"></td>
     <td th:text="${task.completed} ? '✅' : '❌'"></td>
     <td>

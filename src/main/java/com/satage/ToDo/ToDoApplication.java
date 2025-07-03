@@ -12,11 +12,5 @@ public class ToDoApplication {
 		SpringApplication.run(ToDoApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner run(TaskRepository repository) {
-		return args -> {
-			repository.save(new Task("Créer projet Spring Boot", false));
-			repository.save(new Task("Configurer PostgreSQL", true));
-		};
-	}
+
 }

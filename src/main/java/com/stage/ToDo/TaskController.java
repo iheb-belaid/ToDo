@@ -1,4 +1,4 @@
-package com.satage.ToDo;
+package com.stage.ToDo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

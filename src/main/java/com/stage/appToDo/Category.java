@@ -13,7 +13,7 @@ public class Category {
     @NotBlank
     private String name;
 
-    /*----test auto build 2------*/
+    /*----test auto build 3------*/
 
     /* ---------- getters / setters ---------- */
     public Long getId() { return id; }

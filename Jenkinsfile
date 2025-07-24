@@ -21,13 +21,12 @@ pipeline {
 
         stage('Copy Files to VM') {
             steps {
-                bat """
-                ssh -o StrictHostKeyChecking=no %SSH_VM% "mkdir -p %PROJECT_DIR%"
-                scp -o StrictHostKeyChecking=no target\\*.jar %SSH_VM%:%PROJECT_DIR%/
-                scp -o StrictHostKeyChecking=no docker-compose.yml %SSH_VM%:%PROJECT_DIR%/
-                """
+                bat 'ssh -o StrictHostKeyChecking=no iheb@192.168.150.129 "mkdir -p /home/iheb/ToDo"'
+                bat 'scp -o StrictHostKeyChecking=no target\\ToDo-0.0.1-SNAPSHOT.jar iheb@192.168.150.129:/home/iheb/ToDo/'
+                bat 'scp -o StrictHostKeyChecking=no docker-compose.yml iheb@192.168.150.129:/home/iheb/ToDo/'
             }
         }
+
 
         stage('Deploy on VM') {
             steps {

@@ -6,10 +6,6 @@ pipeline {
         PROJECT_DIR = '/home/iheb/ToDo'
     }
 
-    triggers {
-        githubPush()
-    }
-
     stages {
         stage('Clone Repository') {
             steps {
@@ -19,29 +15,25 @@ pipeline {
 
         stage('Build Jar') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                bat 'mvn clean package -DskipTests'
             }
         }
 
         stage('Copy Files to VM') {
             steps {
-                sh """
-                ssh -o StrictHostKeyChecking=no $SSH_VM "mkdir -p $PROJECT_DIR"
-                scp -o StrictHostKeyChecking=no target/*.jar $SSH_VM:$PROJECT_DIR/
-                scp -o StrictHostKeyChecking=no docker-compose.yml $SSH_VM:$PROJECT_DIR/
+                bat """
+                ssh -o StrictHostKeyChecking=no %SSH_VM% "mkdir -p %PROJECT_DIR%"
+                scp -o StrictHostKeyChecking=no target\\*.jar %SSH_VM%:%PROJECT_DIR%/
+                scp -o StrictHostKeyChecking=no docker-compose.yml %SSH_VM%:%PROJECT_DIR%/
                 """
             }
         }
 
         stage('Deploy on VM') {
             steps {
-                sh """
-                ssh $SSH_VM << EOF
-                  cd $PROJECT_DIR
-                  docker compose down
-                  docker compose build
-                  docker compose up -d
-                EOF
+                bat """
+                ssh %SSH_VM% ^
+                  "cd %PROJECT_DIR% && docker compose down && docker compose build && docker compose up -d"
                 """
             }
         }

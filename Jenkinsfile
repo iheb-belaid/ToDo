@@ -21,11 +21,13 @@ pipeline {
 
         stage('Copy Files to VM') {
             steps {
-                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "mkdir -p %PROJECT_DIR%"'
-                bat 'scp -o StrictHostKeyChecking=no target\\ToDo-0.0.1-SNAPSHOT.jar %SSH_VM%:%PROJECT_DIR%/'
-                bat 'scp -o StrictHostKeyChecking=no docker-compose.yml %SSH_VM%:%PROJECT_DIR%/'
+                dir('target') {
+                    bat 'scp -o StrictHostKeyChecking=no ToDo-0.0.1-SNAPSHOT.jar iheb@192.168.4.30:/home/iheb/ToDo/'
+                }
+                bat 'scp -o StrictHostKeyChecking=no docker-compose.yml iheb@192.168.4.30:/home/iheb/ToDo/'
             }
         }
+
 
         stage('Test SSH Connection') {
             steps {

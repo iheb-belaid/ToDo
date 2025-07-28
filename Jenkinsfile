@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SSH_VM = 'iheb@192.168.150.129'
+        SSH_VM = 'iheb@192.168.4.30'
         PROJECT_DIR = '/home/iheb/ToDo'
     }
 
@@ -21,19 +21,23 @@ pipeline {
 
         stage('Copy Files to VM') {
             steps {
-                bat 'ssh -o StrictHostKeyChecking=no iheb@192.168.150.129 "mkdir -p /home/iheb/ToDo"'
-                bat 'scp -o StrictHostKeyChecking=no target\\ToDo-0.0.1-SNAPSHOT.jar iheb@192.168.150.129:/home/iheb/ToDo/'
-                bat 'scp -o StrictHostKeyChecking=no docker-compose.yml iheb@192.168.150.129:/home/iheb/ToDo/'
+                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "mkdir -p %PROJECT_DIR%"'
+                bat 'scp -o StrictHostKeyChecking=no target\\ToDo-0.0.1-SNAPSHOT.jar %SSH_VM%:%PROJECT_DIR%/'
+                bat 'scp -o StrictHostKeyChecking=no docker-compose.yml %SSH_VM%:%PROJECT_DIR%/'
             }
         }
 
+        stage('Test SSH Connection') {
+            steps {
+                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "echo ✅ Connexion SSH OK depuis Jenkins"'
+            }
+        }
 
         stage('Deploy on VM') {
             steps {
-                bat """
-                ssh %SSH_VM% ^
-                  "cd %PROJECT_DIR% && docker compose down && docker compose build && docker compose up -d"
-                """
+                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "cd %PROJECT_DIR% && docker compose down"'
+                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "cd %PROJECT_DIR% && docker compose build"'
+                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "cd %PROJECT_DIR% && docker compose up -d"'
             }
         }
     }

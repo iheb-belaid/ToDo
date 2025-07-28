@@ -7,6 +7,7 @@ pipeline {
     }
 
     stages {
+
         stage('Clone Repository') {
             steps {
                 git url: 'https://github.com/iheb-belaid/ToDo.git', branch: 'main'
@@ -21,25 +22,27 @@ pipeline {
 
         stage('Copy Files to VM') {
             steps {
-                dir('target') {
-                    bat 'scp -o StrictHostKeyChecking=no ToDo-0.0.1-SNAPSHOT.jar iheb@192.168.4.30:/home/iheb/ToDo/'
-                }
-                bat 'scp -o StrictHostKeyChecking=no docker-compose.yml iheb@192.168.4.30:/home/iheb/ToDo/'
-            }
-        }
+                // Créer le dossier cible
+                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "mkdir -p %PROJECT_DIR%"'
 
+                // Copier le fichier JAR sans scp
+                bat '''
+                type target\\ToDo-0.0.1-SNAPSHOT.jar | ssh -o StrictHostKeyChecking=no %SSH_VM% "cat > %PROJECT_DIR%/ToDo-0.0.1-SNAPSHOT.jar"
+                '''
 
-        stage('Test SSH Connection') {
-            steps {
-                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "echo ✅ Connexion SSH OK depuis Jenkins"'
+                // Copier le fichier docker-compose.yml
+                bat '''
+                type docker-compose.yml | ssh -o StrictHostKeyChecking=no %SSH_VM% "cat > %PROJECT_DIR%/docker-compose.yml"
+                '''
             }
         }
 
         stage('Deploy on VM') {
             steps {
-                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "cd %PROJECT_DIR% && docker compose down"'
-                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "cd %PROJECT_DIR% && docker compose build"'
-                bat 'ssh -o StrictHostKeyChecking=no %SSH_VM% "cd %PROJECT_DIR% && docker compose up -d"'
+                bat """
+                ssh %SSH_VM% ^
+                  "cd %PROJECT_DIR% && docker compose down && docker compose build && docker compose up -d"
+                """
             }
         }
     }

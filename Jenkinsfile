@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SSH_VM = 'iheb@192.168.4.30'
+        SSH_VM = 'iheb@192.168.4.44'
         PROJECT_DIR = '/home/iheb/ToDo'
         JAR_NAME = 'ToDo-0.0.1-SNAPSHOT.jar'
     }
@@ -28,10 +28,10 @@ pipeline {
             steps {
                 echo '📤 Étape 3: Transfert des fichiers vers la VM...'
                 bat """
-                    ssh -o StrictHostKeyChecking=no iheb@192.168.4.30 "mkdir -p /home/iheb/ToDo/target"
-                    scp -o StrictHostKeyChecking=no target\\ToDo-0.0.1-SNAPSHOT.jar iheb@192.168.4.30:/home/iheb/ToDo/target/
-                    scp -o StrictHostKeyChecking=no docker-compose.yml iheb@192.168.4.30:/home/iheb/ToDo/
-                    scp -o StrictHostKeyChecking=no Dockerfile iheb@192.168.4.30:/home/iheb/ToDo/
+                    ssh -o StrictHostKeyChecking=no iheb@192.168.4.44 "mkdir -p /home/iheb/ToDo/target"
+                    scp -o StrictHostKeyChecking=no target\\ToDo-0.0.1-SNAPSHOT.jar iheb@192.168.4.44:/home/iheb/ToDo/target/
+                    scp -o StrictHostKeyChecking=no docker-compose.yml iheb@192.168.4.44:/home/iheb/ToDo/
+                    scp -o StrictHostKeyChecking=no Dockerfile iheb@192.168.4.44:/home/iheb/ToDo/
                 """
             }
         }

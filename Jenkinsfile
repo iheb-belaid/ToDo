@@ -50,12 +50,22 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo '--------Le pipeline CI/CD s\'est terminé avec succès.---------------------'
-        }
-        failure {
-            echo '-----------------------------Le pipeline a échoué. Vérifie les étapes ci-dessus pour localiser l\'erreur.------------------------------'
-        }
-    }
+   post {
+       success {
+           echo '✅ Déploiement terminé avec succès !'
+           emailext(
+               to: 'ihebbelaid3@gmail.com',
+               subject: "✅ Succès - Déploiement de ${env.JOB_NAME}",
+               body: "Le pipeline Jenkins s'est terminé avec succès pour le projet ${env.JOB_NAME}.<br>Build: ${env.BUILD_URL}"
+           )
+       }
+       failure {
+           echo '❌ Erreur lors du pipeline.'
+           emailext(
+               to: 'ihebbelaid3@gmail.com',
+               subject: "❌ Échec - Pipeline ${env.JOB_NAME}",
+               body: "Le pipeline Jenkins a échoué pour le projet ${env.JOB_NAME}.<br>Vérifiez les logs ici : ${env.BUILD_URL}"
+           )
+       }
+   }
 }
